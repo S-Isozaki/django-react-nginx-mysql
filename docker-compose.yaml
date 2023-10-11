@@ -17,6 +17,8 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+    volumes:
+      - frontend-volume:/var/www/frontend
     ports:
       - "80:80"
     depends_on:
@@ -30,6 +32,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/frontend
+      - frontend-volume:/frontend/frontend/build
     ports:
       - "3000:3000"
 
@@ -43,3 +46,6 @@ services:
       MSQL_PASSWORD: user
       TZ: "Asia/Tokyo"
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+
+volumes:
+  frontend-volume:
