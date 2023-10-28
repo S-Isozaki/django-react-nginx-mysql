@@ -2,8 +2,8 @@ import './App.css';
 import Header from './components/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import PlayingField from './pages/PlayingField';
-import Result from './pages/Result';
+import Play from './pages/Play';
+import Data from './pages/Data';
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={`/`} element={<Home />} />
-          <Route path={`/playingfield`} element={<PlayingField />} />
-          <Route path={`/result`} element={<Result />} />
+          <Route path={`/play/:length?`} element={<Play />} />
+          <Route path={`/data`} element={<Data />} />
         </Routes>
       </BrowserRouter>
     </div>
