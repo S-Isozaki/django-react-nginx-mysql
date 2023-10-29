@@ -22,9 +22,10 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Typing Game
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color='inherit' component="a" href='/signup'>Sign up</Button>
+          <Button color="inherit">Sign in</Button>
         </Toolbar>
       </AppBar>
     </Box>
