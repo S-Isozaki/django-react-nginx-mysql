@@ -38,6 +38,7 @@ services:
     volumes:
       - ./frontend:/frontend
       - frontend-volume:/frontend/frontend/build
+      - node-modules-volume:/frontend/frontend/node_modules
     ports:
       - "3000:3000"
 
@@ -60,6 +61,7 @@ services:
 
 volumes:
   frontend-volume:
+  node-modules-volume:
 
 networks:
   backend-database-network:

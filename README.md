@@ -7,4 +7,5 @@ docker compose run --rm backend sh -c "python manage.py createsuperuser"
 
 docker compose run --rm frontend sh -c "npm install create-react-app typescript -g"
 docker compose run --rm frontend sh -c "npx create-react-app frontend --template typescript"
-docker compose run --rm frontend sh -c "cd frontend && npm install @mui/material @emotion/react @emotion/styled"
+docker compose run --rm frontend sh -c "npm install @mui/material @emotion/react @emotion/styled"
+docker compose run --rm frontend sh -c "npm install axios"
