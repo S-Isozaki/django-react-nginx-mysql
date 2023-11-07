@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import Timer from '../components/Timer';
 
 const Play = () => {
     const length = Number(new URLSearchParams(useLocation().search).get('length'));
@@ -29,12 +30,16 @@ const Play = () => {
     })
     return (
         <>
+            <Timer />
             <canvas id="display" ref={canvasRef}></canvas>
         </>
     )
 }
-
 export default Play;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// sub functions
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const changeColor = (canvas: HTMLCanvasElement, index: number, str: string, color: string) => {
     var ctx = canvas.getContext("2d")!;
