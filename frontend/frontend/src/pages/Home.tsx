@@ -16,7 +16,6 @@ export default function Home () {
                 <option value={"200"}>200</option>
             </select>
             <Link to={`/play?length=` + selectedLength}>start</Link>
-            <Link to={`/data`}>data</Link>
         </>
     )
 }

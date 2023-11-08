@@ -14,7 +14,7 @@ services:
       - backend-database-network
 
   webserver:
-    restart: always
+    # restart: always
     container_name: webserver-container
     build:
       context: ./nginx
@@ -58,10 +58,12 @@ services:
       - backend-database-network
     volumes:
       - ./database/sql:/docker-entrypoint-initdb.d
+      - database-volume:/var/lib/mysql
 
 volumes:
   frontend-volume:
   node-modules-volume:
+  database-volume:
 
 networks:
   backend-database-network:

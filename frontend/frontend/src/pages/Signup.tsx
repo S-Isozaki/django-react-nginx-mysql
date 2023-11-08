@@ -19,9 +19,17 @@ const Signup = () => {
             {
                 email: email,
                 username: username,
-                password: password,
+                password: password
             }
-        )
+        ).then(function(res) {
+            client.post(
+                "/typinggame/login",
+                {
+                    username: username,
+                    password: password
+                }
+            )
+        });
     }
     return (
         <form onSubmit={e => submitRegistration(e)}>

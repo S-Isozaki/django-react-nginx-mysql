@@ -5,7 +5,12 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerialier, UserSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
+
+def checkAuthenticationStatus(request):
+    return JsonResponse({'is_authenticated': request.user.is_authenticated})
 
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)

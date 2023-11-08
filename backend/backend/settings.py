@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
-    'typinggame.apps.TypinggameConfig',
+    'typinggame',
 ]
 
 MIDDLEWARE = [
