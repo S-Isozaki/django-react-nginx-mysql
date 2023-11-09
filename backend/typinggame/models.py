@@ -42,3 +42,9 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     objects = AppUserManager()
     def __str__(self):
         return self.username
+
+class UserRecord(models.Model):
+    user_name = models.CharField(max_length=255)
+    elapsed_time = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    word_length = models.PositiveIntegerField()

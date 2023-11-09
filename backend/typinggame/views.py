@@ -2,15 +2,16 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerialier, UserSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerialier, UserSerializer, UserRecordSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from .models import UserRecord
 
 
 def checkAuthenticationStatus(request):
-    return JsonResponse({'is_authenticated': request.user.is_authenticated})
+    return JsonResponse({'is_anonymous': request.user.is_anonymous})
 
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -49,3 +50,15 @@ class UserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
+class AddRecord(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
+    serializer_class = UserRecordSerializer
+    def post(self, request):
+        new_record = UserRecord(user_name=request.data["user_name"], elapsed_time=request.data["elapsed_time"], word_length=request.data["word_length"])
+        new_record.save()
+        user_records = UserRecord.objects.filter(user_name=request.data["user_name"], word_length=request.data["word_length"]).order_by('-elapsed_time', '-timestamp')
+        while user_records.count() > 10:
+            user_records.first().delete()
+        return Response(status=status.HTTP_200_OK)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.core.exceptions import ValidationError
+from .models import UserRecord
 
 UserModel = get_user_model()
 
@@ -26,3 +27,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('username',)
+
+class UserRecordSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField()
+    elapsed_time = serializers.FloatField()
+    word_length = serializers.IntegerField()
+    class Meta:
+        model = UserRecord
+        fields = ('user_name', 'elapsed_time', 'word_length',)

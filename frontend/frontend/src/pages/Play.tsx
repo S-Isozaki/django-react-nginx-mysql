@@ -1,6 +1,15 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Timer from '../components/Timer';
+import axios from "axios";
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:8000"
+});
 
 const Play = () => {
     const length = Number(new URLSearchParams(useLocation().search).get('length'));
@@ -19,6 +28,16 @@ const Play = () => {
             if(char === str[index]){
                 changeColor(canvas, index, str[index], 'red');
                 index++;
+                if(index === length){
+                    client.post(
+                        '/typinggame/addrecord',
+                        {
+                            user_name: 'pqooo',
+                            elapsed_time: 10.000,
+                            word_length: length,
+                        },
+                    )
+                }
             }else{
                 for(;;){
                     changeColor(canvas, index, str[index], 'gray');
