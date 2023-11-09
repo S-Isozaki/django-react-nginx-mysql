@@ -8,6 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { isAnonymousState } from '../recoil/Atom';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -18,11 +20,11 @@ const client = axios.create({
 });
 
 export default function ButtonAppBar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
   useEffect(() => {
-    axios.get('/typinggame/checkAuthenticationStatus')
+    axios.get('/typinggame/checkauthenticationstatus')
       .then(response => {
-        setIsAuthenticated(response.data.is_authenticated);
+        setIsAnonymous(response.data.is_anonymous);
       })
       .catch(error => {
         console.error('Error fetching authentication status:', error);
@@ -33,6 +35,9 @@ export default function ButtonAppBar() {
     client.post(
       "/typinggame/logout",
       {withCredentials: true}
+    ).then(() => {
+        setIsAnonymous(true);
+      }
     )
   }
   return (
@@ -51,15 +56,15 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Typing Game
           </Typography>
-          {isAuthenticated ? 
-            <Button color='inherit' component="a" href='/data'>name</Button>
-            : 
+          {isAnonymous ? 
             <Button color='inherit' component="a" href='/signup'>Sign up</Button>
+            : 
+            <Button color='inherit' component="a" href='/data'>name</Button>
           }
-          {isAuthenticated ? 
-            <Button color='inherit' onClick={submitLogout}>Log out</Button>
-            :
+          {isAnonymous ? 
             <Button color="inherit" component="a" href='/signin'>Sign in</Button>
+            :
+            <Button color='inherit' onClick={submitLogout}>Log out</Button>
           }
         </Toolbar>
       </AppBar>

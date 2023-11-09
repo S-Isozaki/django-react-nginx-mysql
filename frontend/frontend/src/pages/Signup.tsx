@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { isAnonymousState } from '../recoil/Atom';
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
@@ -9,6 +12,7 @@ const client = axios.create({
 });
 
 const Signup = () => {
+    const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState)
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,7 +32,8 @@ const Signup = () => {
                     username: username,
                     password: password
                 }
-            )
+            );
+            setIsAnonymous(false);
         });
     }
     return (

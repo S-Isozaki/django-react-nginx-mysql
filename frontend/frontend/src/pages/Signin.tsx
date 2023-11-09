@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { isAnonymousState } from "../recoil/Atom";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -10,16 +12,16 @@ const client = axios.create({
 });
 
 const Signin = () => {
-    const [currentUser, setCurrentUser] = useState<boolean>();
+    const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     useEffect(() => {
         client.get("/typinggame/user")
         .then(function(res){
-            setCurrentUser(true);
+            setIsAnonymous(false);
         })
         .catch(function(error){
-            setCurrentUser(false);
+            setIsAnonymous(true);
         });
     }, []);
     function submitSignin(e: any) {
@@ -31,7 +33,7 @@ const Signin = () => {
                 password: password
             }
         ).then(function(res){
-            setCurrentUser(true);
+            setIsAnonymous(false);
         });
     }
     return (
