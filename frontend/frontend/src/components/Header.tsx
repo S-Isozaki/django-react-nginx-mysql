@@ -21,10 +21,15 @@ const client = axios.create({
 
 export default function ButtonAppBar() {
   const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
+  const [userName, setUsername] = useState(null);
   useEffect(() => {
     axios.get('/typinggame/checkauthenticationstatus')
       .then(response => {
         setIsAnonymous(response.data.is_anonymous);
+        axios.get('/typinggame/checkusername')
+          .then(response => {
+            setUsername(response.data.user_name);
+          })
       })
       .catch(error => {
         console.error('Error fetching authentication status:', error);
@@ -59,7 +64,7 @@ export default function ButtonAppBar() {
           {isAnonymous ? 
             <Button color='inherit' component="a" href='/signup'>Sign up</Button>
             : 
-            <Button color='inherit' component="a" href='/data'>name</Button>
+            <Button color='inherit' component="a" href='/data'>{userName}</Button>
           }
           {isAnonymous ? 
             <Button color="inherit" component="a" href='/signin'>Sign in</Button>

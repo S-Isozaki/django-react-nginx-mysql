@@ -7,5 +7,6 @@ urlpatterns = [
     path("logout", views.UserLogout.as_view(), name='logout'),
     path("user", views.UserView.as_view(), name='user'),
     path('checkauthenticationstatus', views.checkAuthenticationStatus),
+    path('checkusername', views.checkUsername),
     path('addrecord', views.AddRecord.as_view(), name='addrecord'),
 ]

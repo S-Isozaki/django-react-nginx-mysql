@@ -13,6 +13,9 @@ from .models import UserRecord
 def checkAuthenticationStatus(request):
     return JsonResponse({'is_anonymous': request.user.is_anonymous})
 
+def checkUsername(request):
+    return JsonResponse({'user_name': request.user.get_username()})
+
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
