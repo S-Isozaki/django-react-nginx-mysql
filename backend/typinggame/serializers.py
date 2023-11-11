@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserRecordSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField()
-    elapsed_time = serializers.FloatField()
+    elapsed_time = serializers.DecimalField(max_digits=5, decimal_places=2)
     word_length = serializers.IntegerField()
     class Meta:
         model = UserRecord

@@ -1,7 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Timer from '../components/Timer';
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { elapsedTimeState } from "../recoil/Atom";
+import { isRunningState } from "../recoil/Atom";
+
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -12,31 +16,41 @@ const client = axios.create({
 });
 
 const Play = () => {
+    const [elapsedTime, setElapsedTime] = useState(0);
+    const [isRunning, setIsRunning] = useRecoilState(isRunningState);
     const length = Number(new URLSearchParams(useLocation().search).get('length'));
     const canvasRef = useRef(null);
     const str = generateRandomString(length);
+    const elapsedTimeRef = useRef(elapsedTime);
+    
+    var index = 0;
     useEffect(() => {
         const canvas = canvasRef.current! as HTMLCanvasElement;
-        const ctx = canvas.getContext("2d");
         canvas.width = 1080;
         canvas.height = 500;
         renderString(canvas, length, str);
-        
-        var index = 0;
+    }, [])
+    useEffect(() => {
+        elapsedTimeRef.current = elapsedTime;
+    }, [elapsedTime])
+    useEffect(() => {
+        const canvas = canvasRef.current! as HTMLCanvasElement;
         window.addEventListener('keydown', (e) => {
             const char = e.key;
             if(char === str[index]){
                 changeColor(canvas, index, str[index], 'red');
                 index++;
                 if(index === length){
+                    setIsRunning(false);
                     client.post(
                         '/typinggame/addrecord',
                         {
                             user_name: 'pqooo',
-                            elapsed_time: 10.000,
+                            elapsed_time: elapsedTimeRef.current / 1000.0,
                             word_length: length,
                         },
                     )
+                    window.removeEventListener('keydown', (e) => {});
                 }
             }else{
                 for(;;){
@@ -46,10 +60,13 @@ const Play = () => {
                 }
             }
         })
-    })
+    }, [])
+    const handleTimeChange = (time: number) => {
+        setElapsedTime(time);
+    }
     return (
         <>
-            <Timer />
+            <Timer onRunningChange={handleTimeChange}/>
             <canvas id="display" ref={canvasRef}></canvas>
         </>
     )
