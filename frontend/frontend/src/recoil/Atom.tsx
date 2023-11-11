@@ -15,3 +15,8 @@ export const isRunningState = atom({
     key: 'isRunningState',
     default: true,
 })
+
+export const usernameState = atom({
+    key: 'usernameState',
+    default: '',
+})

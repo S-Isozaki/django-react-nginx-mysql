@@ -3,12 +3,12 @@ import { elapsedTimeState, isRunningState } from '../recoil/Atom';
 import { useRecoilState } from 'recoil';
 
 interface TimerProps {
-    onRunningChange: (time: number) => void;
+    onTimeChange: (time: number) => void;
 }
-const Timer: React.FC<TimerProps> = ({ onRunningChange }) => {
+const Timer: React.FC<TimerProps> = ({ onTimeChange }) => {
     const [elapsedTime, setElapsedTime] = useRecoilState(elapsedTimeState);
     useEffect(() => {
-        onRunningChange(elapsedTime);
+        onTimeChange(elapsedTime);
     }, [elapsedTime])
     useEffect(() => {
         const interval = setInterval(() => {

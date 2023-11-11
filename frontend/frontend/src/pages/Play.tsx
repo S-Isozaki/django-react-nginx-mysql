@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { elapsedTimeState } from "../recoil/Atom";
 import { isRunningState } from "../recoil/Atom";
+import { usernameState } from "../recoil/Atom";
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -18,6 +19,7 @@ const client = axios.create({
 const Play = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isRunning, setIsRunning] = useRecoilState(isRunningState);
+    const [username, setUsername] = useRecoilState(usernameState);
     const length = Number(new URLSearchParams(useLocation().search).get('length'));
     const canvasRef = useRef(null);
     const str = generateRandomString(length);
@@ -41,11 +43,12 @@ const Play = () => {
                 changeColor(canvas, index, str[index], 'red');
                 index++;
                 if(index === length){
-                    setIsRunning(false);
+                    const switchIsRunning = !isRunning;
+                    setIsRunning(switchIsRunning);
                     client.post(
                         '/typinggame/addrecord',
                         {
-                            user_name: 'pqooo',
+                            user_name: username,
                             elapsed_time: elapsedTimeRef.current / 1000.0,
                             word_length: length,
                         },
@@ -60,13 +63,13 @@ const Play = () => {
                 }
             }
         })
-    }, [])
+    }, [isRunning])
     const handleTimeChange = (time: number) => {
         setElapsedTime(time);
     }
     return (
         <>
-            <Timer onRunningChange={handleTimeChange}/>
+            <Timer onTimeChange={handleTimeChange}/>
             <canvas id="display" ref={canvasRef}></canvas>
         </>
     )

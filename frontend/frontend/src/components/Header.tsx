@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { isAnonymousState } from '../recoil/Atom';
+import { isAnonymousState, usernameState } from '../recoil/Atom';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -21,7 +21,7 @@ const client = axios.create({
 
 export default function ButtonAppBar() {
   const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
-  const [userName, setUsername] = useState(null);
+  const [userName, setUsername] = useRecoilState(usernameState);
   useEffect(() => {
     axios.get('/typinggame/checkauthenticationstatus')
       .then(response => {
