@@ -39,8 +39,8 @@ services:
       - ./frontend:/frontend
       - frontend-volume:/frontend/frontend/build
       - node-modules-volume:/frontend/frontend/node_modules
-    ports:
-      - "3000:3000"
+    expose:
+      - 3000
 
   database:
     container_name: database-container
@@ -52,8 +52,8 @@ services:
       MSQL_PASSWORD: user
       TZ: "Asia/Tokyo"
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
     networks:
       - backend-database-network
     volumes:

@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    spec.ingressClassName: "nginx"
+  labels:
+    name: ingress-service
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/admin"
+        backend:
+          service:
+            name: backend
+            port: 
+              number: 8000
+      - pathType: Prefix
+        path: "/typinggame"
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8000
+      - pathType: Prefix
+        path: "/static/"
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3000
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3000

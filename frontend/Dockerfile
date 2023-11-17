@@ -2,12 +2,12 @@ FROM node:alpine
 
 WORKDIR /frontend
 
-RUN npm install create-react-app typescript
+COPY . /frontend/
 
 WORKDIR /frontend/frontend
-RUN npm install @mui/material @emotion/react @emotion/styled
-RUN npm install @mui/icons-material
-RUN npm install react-router-dom
 
-COPY . /frontend/
+RUN npm install
+RUN npm install serve -g
+RUN npm run build
+
 CMD [ "sh", "/frontend/entrypoint.sh" ]

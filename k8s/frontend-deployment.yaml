@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\user\AppData\Local\Microsoft\WinGet\Links\kompose.exe --file .\docker-compose.yaml convert
+    kompose.version: 1.30.0 (9d8dcb518)
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\user\AppData\Local\Microsoft\WinGet\Links\kompose.exe --file .\docker-compose.yaml convert
+        kompose.version: 1.30.0 (9d8dcb518)
+      labels:
+        io.kompose.network/django-react-nginx-mysql-default: "true"
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - image: isatoshi/django-react-nginx-mysql-frontend
+          name: frontend-container
+          ports:
+            - containerPort: 3000
+          resources: {}
+          volumeMounts:
+            - mountPath: /frontend/frontend/build
+              name: frontend-volume
+      volumes:
+        - name: frontend-volume
+          persistentVolumeClaim:
+            claimName: frontend-volume
+status: {}
