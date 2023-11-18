@@ -14,13 +14,10 @@ services:
       - backend-database-network
 
   webserver:
-    # restart: always
     container_name: webserver-container
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    volumes:
-      - frontend-volume:/var/www/frontend
     ports:
       - "80:80"
     depends_on:
@@ -37,7 +34,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/frontend
-      - frontend-volume:/frontend/frontend/build
       - node-modules-volume:/frontend/frontend/node_modules
     expose:
       - 3000
@@ -61,7 +57,6 @@ services:
       - database-volume:/var/lib/mysql
 
 volumes:
-  frontend-volume:
   node-modules-volume:
   database-volume:
 

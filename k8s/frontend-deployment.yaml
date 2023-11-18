@@ -30,11 +30,11 @@ spec:
           ports:
             - containerPort: 3000
           resources: {}
-          volumeMounts:
-            - mountPath: /frontend/frontend/build
-              name: frontend-volume
-      volumes:
-        - name: frontend-volume
-          persistentVolumeClaim:
-            claimName: frontend-volume
+      #     volumeMounts:
+      #       - mountPath: /frontend/frontend/build
+      #         name: frontend-volume
+      # volumes:
+      #   - name: frontend-volume
+      #     persistentVolumeClaim:
+      #       claimName: frontend-volume
 status: {}
