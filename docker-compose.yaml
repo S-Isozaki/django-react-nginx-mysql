@@ -1,5 +1,6 @@
 services:
   backend:
+    image: isatoshi/django-react-nginx-mysql-backend
     container_name: backend-container
     build:
       context: ./backend
@@ -14,6 +15,7 @@ services:
       - backend-database-network
 
   webserver:
+    image: isatoshi/django-react-nginx-mysql-webserver
     container_name: webserver-container
     build:
       context: ./nginx
@@ -28,6 +30,7 @@ services:
       - backend-database-network
 
   frontend:
+    image: isatoshi/django-react-nginx-mysql-frontend
     container_name: frontend-container
     build:
       context: ./frontend
@@ -40,7 +43,10 @@ services:
 
   database:
     container_name: database-container
-    image: mysql
+    image: isatoshi/django-react-nginx-mysql-database
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: backenddb

@@ -10,23 +10,20 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { isAnonymousState, usernameState } from '../recoil/Atom';
+import * as settings from '../settings';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
-});
-
 export default function ButtonAppBar() {
   const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
   const [userName, setUsername] = useRecoilState(usernameState);
   useEffect(() => {
-    axios.get('/typinggame/checkauthenticationstatus')
+    axios.get(`${settings.API_SERVER}/typinggame/checkauthenticationstatus`)
       .then(response => {
         setIsAnonymous(response.data.is_anonymous);
-        axios.get('/typinggame/checkusername')
+        axios.get(`${settings.API_SERVER}/typinggame/checkusername`)
           .then(response => {
             setUsername(response.data.user_name);
           })
@@ -37,8 +34,8 @@ export default function ButtonAppBar() {
   }, []);
   function submitLogout(e: any) {
     e.preventDefault();
-    client.post(
-      "/typinggame/logout",
+    axios.post(
+      `${settings.API_SERVER}/typinggame/logout`,
       {withCredentials: true}
     ).then(() => {
         setIsAnonymous(true);

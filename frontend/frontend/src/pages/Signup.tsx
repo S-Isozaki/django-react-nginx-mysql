@@ -2,13 +2,14 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { isAnonymousState } from '../recoil/Atom';
+import * as settings from '../settings';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-    baseURL: "http://127.0.0.1:8000"
+    baseURL: `${settings.API_SERVER}`,
 });
 
 const Signup = () => {
@@ -18,16 +19,16 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     function submitRegistration(e: any) {
         e.preventDefault();
-        client.post(
-            "/typinggame/register",
+        axios.post(
+            `${settings.API_SERVER}/typinggame/register`,
             {
                 email: email,
                 username: username,
                 password: password
             }
         ).then(function(res) {
-            client.post(
-                "/typinggame/login",
+            axios.post(
+                `${settings.API_SERVER}/typinggame/login`,
                 {
                     username: username,
                     password: password

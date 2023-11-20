@@ -40,7 +40,7 @@ spec:
               value: user
             - name: TZ
               value: Asia/Tokyo
-          image: mysql
+          image: isatoshi/django-react-nginx-mysql-database
           name: database-container
           ports:
             - containerPort: 3306

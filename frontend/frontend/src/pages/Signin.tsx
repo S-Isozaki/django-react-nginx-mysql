@@ -2,21 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { isAnonymousState } from "../recoil/Atom";
+import * as settings from "../settings";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
-
-const client = axios.create({
-    baseURL: "http://127.0.0.1:8000"
-});
 
 const Signin = () => {
     const [isAnonymous, setIsAnonymous] = useRecoilState(isAnonymousState);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     useEffect(() => {
-        client.get("/typinggame/user")
+        axios.get(`${settings.API_SERVER}/typinggame/user`)
         .then(function(res){
             setIsAnonymous(false);
         })
@@ -26,8 +23,8 @@ const Signin = () => {
     }, []);
     function submitSignin(e: any) {
         e.preventDefault();
-        client.post(
-            "/typinggame/login",
+        axios.post(
+            `${settings.API_SERVER}/typinggame/login`,
             {
                 username: username,
                 password: password

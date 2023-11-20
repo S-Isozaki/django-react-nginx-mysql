@@ -6,15 +6,12 @@ import { useRecoilState } from "recoil";
 import { elapsedTimeState } from "../recoil/Atom";
 import { isRunningState } from "../recoil/Atom";
 import { usernameState } from "../recoil/Atom";
+import * as settings from '../settings';
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
-});
 
 const Play = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -45,8 +42,8 @@ const Play = () => {
                 if(index === length){
                     const switchIsRunning = !isRunning;
                     setIsRunning(switchIsRunning);
-                    client.post(
-                        '/typinggame/addrecord',
+                    axios.post(
+                        `${settings.API_SERVER}/typinggame/addrecord`,
                         {
                             user_name: username,
                             elapsed_time: elapsedTimeRef.current / 1000.0,

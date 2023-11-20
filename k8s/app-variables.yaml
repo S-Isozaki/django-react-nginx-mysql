@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-variables
+data:
+  MYSQL_USER: user
+  MYSQL_PASSWORD: user
+  MYSQL_DATABASE: backenddb
+
+  DJANGO_ALLOWED_HOSTS: "*"
+  DJANGO_ADMIN_USER: admin
+  DJANGO_ADMIN_PASSWORD: admin
+  DJANGO_ADMIN_EMAIL: i.satoshi1987@gmail.com
+
+  DATABASE: mysql
+  DB_ENGINE: django.db.backends.mysql
+  DB_DATABASE: backenddb
+  DB_USER: user
+  DB_PASSWORD: user
+  DB_PORT: "3306"
