@@ -11,30 +11,30 @@ spec:
   - http:
       paths:
       - pathType: Prefix
-        path: "/admin"
+        path: /admin/
         backend:
           service:
-            name: backend
+            name: backend-service
             port: 
               number: 8000
       - pathType: Prefix
-        path: "/typinggame"
+        path: /typinggame/
         backend:
           service:
-            name: backend
+            name: backend-service
             port:
               number: 8000
+      # - pathType: ImplementationSpecific
+      #   path: /static/
+      #   backend:
+      #     service:
+      #       name: frontend
+      #       port:
+      #         number: 3000
       - pathType: Prefix
-        path: "/static/"
+        path: /
         backend:
           service:
-            name: frontend
-            port:
-              number: 3000
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: frontend
+            name: frontend-service
             port:
               number: 3000

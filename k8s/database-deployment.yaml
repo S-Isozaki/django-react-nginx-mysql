@@ -1,28 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: C:\Users\user\AppData\Local\Microsoft\WinGet\Links\kompose.exe --file .\docker-compose.yaml convert
-    kompose.version: 1.30.0 (9d8dcb518)
-  labels:
-    io.kompose.service: database
-  name: database
+  name: database-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: database
+      component: database
   strategy:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: C:\Users\user\AppData\Local\Microsoft\WinGet\Links\kompose.exe --file .\docker-compose.yaml convert
-        kompose.version: 1.30.0 (9d8dcb518)
       labels:
-        io.kompose.network/django-react-nginx-mysql-backend-database-network: "true"
-        io.kompose.service: database
+        component: database
     spec:
       containers:
         - args:
@@ -30,7 +21,7 @@ spec:
             - --character-set-server=utf8
             - --collation-server=utf8_unicode_ci
           env:
-            - name: MSQL_PASSWORD
+            - name: MYSQL_PASSWORD
               value: user
             - name: MYSQL_DATABASE
               value: backenddb
@@ -44,9 +35,14 @@ spec:
           name: database-container
           ports:
             - containerPort: 3306
-              hostPort: 3306
               protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: database-volume

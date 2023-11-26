@@ -8,5 +8,57 @@ spec:
       containers:
       - name: backend-job-container
         image: isatoshi/django-react-nginx-mysql-backend
-        # command: ["sh", "-c", "/backend/entrypoint.sh"]
+        command: ["sh", "-c", "/backend/entrypoint.sh"]
+        env:
+          - name: DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DATABASE
+          - name: DB_ENGINE
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DB_ENGINE
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DB_DATABASE
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DB_USER
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DB_HOST
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DB_PORT
+          - name: DJANGO_ALLOWED_HOSTS
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DJANGO_ALLOWED_HOSTS
+          - name: DJANGO_ADMIN_USER
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DJANGO_ADMIN_USER 
+          - name: DJANGO_ADMIN_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DJANGO_ADMIN_PASSWORD 
+          - name: DJANGO_ADMIN_EMAIL
+            valueFrom:
+              configMapKeyRef:
+                name: app-variables
+                key: DJANGO_ADMIN_EMAIL
       restartPolicy: Never
+  backoffLimit: 4

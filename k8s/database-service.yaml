@@ -1,19 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: C:\Users\user\AppData\Local\Microsoft\WinGet\Links\kompose.exe --file .\docker-compose.yaml convert
-    kompose.version: 1.30.0 (9d8dcb518)
-  labels:
-    io.kompose.service: database
-  name: database
+  name: database-service
   namespace: default
 spec:
   ports:
     - name: "3306"
       port: 3306
-      targetPort: 3306
   selector:
-    io.kompose.service: database
+    component: database
 status:
   loadBalancer: {}

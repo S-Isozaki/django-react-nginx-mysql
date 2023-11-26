@@ -11,4 +11,7 @@ RUN pip install -r requirements.txt
 
 COPY . /backend/
 
-CMD [ "sh", "/backend/entrypoint.sh" ]
+RUN python manage.py collectstatic --noinput
+RUN python manage.py makemigrations typinggame
+
+CMD [ "sh", "-c", "/backend/entrypoint.sh" ]

@@ -16,5 +16,5 @@ data:
   DB_ENGINE: django.db.backends.mysql
   DB_DATABASE: backenddb
   DB_USER: user
-  DB_PASSWORD: user
+  DB_HOST: database
   DB_PORT: "3306"
