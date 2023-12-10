@@ -2,11 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Timer from '../components/Timer';
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { elapsedTimeState } from "../recoil/Atom";
-import { isRunningState } from "../recoil/Atom";
 import { usernameState } from "../recoil/Atom";
-
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -18,7 +16,6 @@ const client = axios.create({
 
 const Play = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
-    const [isRunning, setIsRunning] = useRecoilState(isRunningState);
     const [username, setUsername] = useRecoilState(usernameState);
     const length = Number(new URLSearchParams(useLocation().search).get('length'));
     const canvasRef = useRef(null);
@@ -33,9 +30,6 @@ const Play = () => {
         renderString(canvas, length, str);
     }, [])
     useEffect(() => {
-        elapsedTimeRef.current = elapsedTime;
-    }, [elapsedTime])
-    useEffect(() => {
         const canvas = canvasRef.current! as HTMLCanvasElement;
         window.addEventListener('keydown', (e) => {
             const char = e.key;
@@ -43,8 +37,6 @@ const Play = () => {
                 changeColor(canvas, index, str[index], 'red');
                 index++;
                 if(index === length){
-                    const switchIsRunning = !isRunning;
-                    setIsRunning(switchIsRunning);
                     client.post(
                         '/typinggame/addrecord',
                         {
@@ -63,13 +55,19 @@ const Play = () => {
                 }
             }
         })
-    }, [isRunning])
-    const handleTimeChange = (time: number) => {
-        setElapsedTime(time);
-    }
+    }, [])
+    const intervalRef = useRef(0);
+    useEffect(() => {
+        clearInterval(intervalRef.current)
+        intervalRef.current = window.setInterval(() => {
+            const nextElapsedTime = elapsedTime + 10;
+            setElapsedTime(nextElapsedTime);
+        }, 10)
+    }, [elapsedTime]);
     return (
         <>
-            <Timer onTimeChange={handleTimeChange}/>
+            <p>{Math.floor(elapsedTime / (1000 * 60 * 60))}:{Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60))}:{Math.floor((elapsedTime % (1000 * 60)) / 1000)}:{elapsedTime % 1000}</p>
+            {/* <Timer /> */}
             <canvas id="display" ref={canvasRef}></canvas>
         </>
     )

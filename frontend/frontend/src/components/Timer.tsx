@@ -1,23 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { elapsedTimeState, isRunningState } from '../recoil/Atom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
-interface TimerProps {
-    onTimeChange: (time: number) => void;
-}
-const Timer: React.FC<TimerProps> = ({ onTimeChange }) => {
+const Timer = () => {
     const [elapsedTime, setElapsedTime] = useRecoilState(elapsedTimeState);
-    const [isRunning, setIsRunning] = useRecoilState(isRunningState);
     const intervalRef = useRef(0);
     useEffect(() => {
-        onTimeChange(elapsedTime);
-    }, [elapsedTime])
-    clearInterval(intervalRef.current)
-    intervalRef.current = window.setInterval(() => {
-        const nextElapsedTime = elapsedTime + 10;
-        setElapsedTime(nextElapsedTime);
-    }, 10)
-    if(!isRunning) clearInterval(intervalRef.current);
+        clearInterval(intervalRef.current)
+        intervalRef.current = window.setInterval(() => {
+            const nextElapsedTime = elapsedTime + 10;
+            setElapsedTime(nextElapsedTime);
+        }, 10)
+    }, [elapsedTime]);
     return (
         <p>{Math.floor(elapsedTime / (1000 * 60 * 60))}:{Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60))}:{Math.floor((elapsedTime % (1000 * 60)) / 1000)}:{elapsedTime % 1000}</p>
     )
